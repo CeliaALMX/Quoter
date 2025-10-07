@@ -1,0 +1,70 @@
+<odoo>
+  <!-- Vista inicial al entrar a la app -->
+  <record id="view_app_quote_tree" model="ir.ui.view">
+    <field name="name">app.quote.tree</field>
+    <field name="model">app.quote</field>
+    <field name="arch" type="xml">
+      <tree string="Cotizaciones" default_order="date_order desc">
+        <field name="name" string="Folio"/>
+        <field name="date_order"/>
+        <field name="partner_id"/>
+        <field name="user_id"/>
+        <field name="company"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Busqueda -->
+  <record id="view_app_quote_search" model="ir.ui.view">
+    <field name="name">app.quote.search</field>
+    <field name="model">app.quote</field>
+    <field name="arch" type="xml">
+      <search string="Buscar cotizaciones">
+        <field name="name" string="Folio"/>
+        <field name="partner_id" string="Cliente"/>
+        <field name="user_id" string="Vendedor"/>
+        <filter name="state_draft" string="Borrador" domain="[('state','=','draft')]"/>
+        <filter name="state_sent" string="Enviada" domain="[('state','=','sent')]"/>
+        <filter name="state_confirmed" string="Confirmada" domain="[('state','=','confirmed')]"/>
+        <filter name="state_cancel" string="Cancelada" domain="[('state','=','cancel')]"/>
+        <group expand="0" string="Agrupar por">
+          <filter string="Vendedor" name="grp_user" context="{'group_by':'user_id'}"/>
+          <filter string="Estado" name="grp_state" context="{'group_by':'state'}"/>
+          <filter string="Fecha" name="grp_date" context="{'group_by':'date_order'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Formulario -->
+  <record id="view_app_quote_form" model="ir.ui.view">
+    <field name="name">app.quote.form</field>
+    <field name="model">app.quote</field>
+    <field name="arch" type="xml">
+      <form string="Cotización">
+        <sheet>
+          <group>
+            <field name="name" readonly="1"/>
+            <field name="date_order"/>
+          </group>
+          <group>
+            <field name="partner_id"/>
+            <field name="user_id"/>
+            <field name="company"/>
+            <field name="state"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_my_app_items" model="ir.actions.act_window">
+    <field name="name">Cotizaciones</field>
+    <field name="res_model">app.quote</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_app_quote_tree"/>
+    <field name="search_view_id" ref="view_app_quote_search"/>
+  </record>
+</odoo>

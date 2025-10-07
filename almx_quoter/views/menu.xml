@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <menuitem id="menu_almx_quoter_root"
+              name="Cotizaciones"
+              sequence="10"
+              web_icon="almx_quoter,static/description/icon.png"/>
+
+    <!-- Menú listado enlazando la acción -->
+    <menuitem id="menu_almx_quoter_items"
+              name="Cotizaciones"
+              parent="menu_almx_quoter_root"
+              action="action_my_app_items"
+              sequence="10"/>
+
+  </data>
+</odoo>
