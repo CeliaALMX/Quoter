@@ -42,22 +42,98 @@
     <field name="name">app.quote.form</field>
     <field name="model">app.quote</field>
     <field name="arch" type="xml">
-      <form string="Cotización">
+      <form string="Cotización" class="o_sale_order">
+        <!--Aquí es la barra de estado de las contizaciones y los botones-->
+        <header>
+          <!--Botón destacado, solo es visible en borrador y enviado-->
+          <button name="action_confirm"
+                  type="object"
+                  string="Confirmar"
+                  class="btn-primary"
+                  attrs="{'invisible': [('state','not in', ('draft','sent'))]}"
+                  confirm="¿estás seguro de confirmar la contización?"/>
+
+          <!--Boton para cancelar-->
+          <button name="action_cancel"
+                  type="object"
+                  string="Cancelar"
+                  class="btn-secondary"
+                  attrs="{'invisible': [('state','not in', ('draft','sent','confirmed'))]}"/>
+
+          <!--Boton para volver a borrador-->
+          <button name="action_set_draft"
+          type="object"
+          string="Establecer como borrador"
+          attrs="{'invisible': [('state','!=','cancel')]}"/>
+
+          <!--Barra de estado-->
+          <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirmed,cancel" readonly="1"/>
+        </header>
+
         <sheet>
+          <!--Titulo -->
+          <div>
+            <h1>
+              <field name="name" readonly="1" required="1" string="Folio"/>
+            </h1>
+          </div>
+
+          <!--Encabezados de dos columnas-->
           <group>
-            <field name="name" readonly="1"/>
-            <field name="date_order"/>
+            <group>
+              <field name="partner_id" string="Cliente" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}" context="{'search_default_customer': 1}"
+                     options="{'no_open': False, 'no_create_edit': False}"/>
+
+              <field name="partner_id"
+                     widget="contact"
+                     class="o_address_format"
+                     options="{'no_open': True,'fields': ['street','street2','city','zip','state_id','country_id','vat']}"/>
+
+              <field name="user_id" string="Vendedor" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}"/>
+            </group>
+
+            <group name="order_details">
+              <field name="date_order" string="Fecha de cotización" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}"/>
+              <field name="company" string="Compañía"/>
+            </group>
           </group>
-          <group>
-            <field name="partner_id"/>
-            <field name="user_id"/>
-            <field name="company"/>
-            <field name="state"/>
-          </group>
+          <!-- Estructura visual de ventas-->
+          <notebook>
+            <page string="Caracteristicas del equipo">
+              <group>
+                <group>
+                  <field name="elevator_quant"/>
+                  <field name="group_elevator"/>
+                  <field name="capacity_elevator"/>
+                  <field name="entrance_type"/>
+                  <field name="door_height"/>
+                  <field name="door_type"/>
+                </group>
+                <group>
+                  <field name="door_width"/>
+                  <field name="type_install"/>
+                  <field name="car_door"/>
+                  <field name="landing_door"/>
+                  <field name="car_model"/>
+                  <field name="car_floor"/>
+                </group>
+              </group>
+            </page>
+
+            <page string="Información sobre los elevadores">
+              <group>
+                <separator string="Aquí irán los campos requeridos para los elevadores" colspan="2"/>
+              </group>
+            </page>
+          </notebook>
         </sheet>
       </form>
     </field>
   </record>
+
+
+
+
 
   <!-- Action -->
   <record id="action_my_app_items" model="ir.actions.act_window">
