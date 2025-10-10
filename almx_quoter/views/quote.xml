@@ -81,24 +81,23 @@
           <!--Encabezados de dos columnas-->
           <group>
             <group>
-              <field name="partner_id" string="Cliente" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}" context="{'search_default_customer': 1}"
-                     options="{'no_open': False, 'no_create_edit': False}"/>
-
               <field name="partner_id"
-                     widget="contact"
-                     class="o_address_format"
-                     options="{'no_open': True,'fields': ['street','street2','city','zip','state_id','country_id','vat']}"/>
+                     domain="[('active','=', True)]"
+                     context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_email': 1}"
+                     options="{'no_open': False, 'no_create_edit': False}"/>/>
 
-              <field name="user_id" string="Vendedor" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}"/>
+              <field name="user_id" string="Vendedor" attrs="{'invisible': [('state', '!=', 'confirmed')],
+                     'readonly': [('state','in',('confirmed','cancel'))]}"/>
             </group>
 
             <group name="order_details">
               <field name="date_order" string="Fecha de cotización" attrs="{'readonly': [('state','in',('confirmed','cancel'))]}"/>
-              <field name="company" string="Compañía"/>
+              <field name="company" string="Compañía" attrs="{'invisible': [('state', '!=', 'confirmed')],
+                     'readonly': [('state','in',('confirmed','cancel'))]}"/>
             </group>
           </group>
           <!-- Estructura visual de ventas-->
-          <notebook>
+          <notebook attrs="{'invisible': [('partner_id', '=', False)]}">
             <page string="Caracteristicas del equipo">
               <group>
                 <group>
