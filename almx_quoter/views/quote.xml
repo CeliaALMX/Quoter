@@ -1,175 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="action_my_app_items" model="ir.actions.act_window">
-        <field name="name">Cotizaciones</field>
-        <field name="res_model">app.quote</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+    <data>
 
-    <menuitem id="menu_almx_quoter_root" name="Cotizador" sequence="1"/>
-    <menuitem id="menu_almx_quoter_items"
-              name="Cotizaciones"
-              parent="menu_almx_quoter_root"
-              action="action_my_app_items"
-              sequence="10"/>
+        <!-- ========================================================= -->
+        <!-- Acción principal para abrir el formulario de cotizaciones -->
+        <!-- ========================================================= -->
+        <record id="action_my_app_items" model="ir.actions.act_window">
+            <field name="name">Cotizaciones de Elevadores</field>
+            <field name="res_model">app.quote</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>Aquí podrás crear, editar y confirmar cotizaciones de elevadores.</p>
+            </field>
+        </record>
 
-    <!-- Vista tree -->
-    <record id="view_app_quote_tree" model="ir.ui.view">
-        <field name="name">app.quote.tree</field>
-        <field name="model">app.quote</field>
-        <field name="arch" type="xml">
-            <tree string="Cotizaciones" default_order="date_order desc">
-                <field name="name"/>
-                <field name="date_order"/>
-                <field name="partner_id"/>
-                <field name="user_id"/>
-                <field name="company"/>
-                <field name="state"/>
-                <field name="amount_total"/>
-            </tree>
-        </field>
-    </record>
+        <!-- =============== -->
+        <!-- Menús del módulo -->
+        <!-- =============== -->
+        <menuitem id="menu_almx_quoter_root"
+                  name="Cotizador ALMX"
+                  sequence="1"/>
 
-    <!-- Vista de búsqueda -->
-    <record id="view_app_quote_search" model="ir.ui.view">
-        <field name="name">app.quote.search</field>
-        <field name="model">app.quote</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="user_id"/>
-                <filter name="state_draft" string="Borrador" domain="[('state','=','draft')]"/>
-                <filter name="state_sent" string="Enviada" domain="[('state','=','sent')]"/>
-                <filter name="state_confirmed" string="Confirmada" domain="[('state','=','confirmed')]"/>
-                <filter name="state_cancel" string="Cancelada" domain="[('state','=','cancel')]"/>
-                <group expand="0" string="Agrupar por">
-                    <filter string="Vendedor" name="grp_user" context="{'group_by':'user_id'}"/>
-                    <filter string="Estado" name="grp_state" context="{'group_by':'state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
+        <menuitem id="menu_almx_quoter_items"
+                  name="Cotizaciones"
+                  parent="menu_almx_quoter_root"
+                  action="action_my_app_items"
+                  sequence="10"/>
 
-    <!-- Vista form completa -->
-    <record id="view_app_quote_form" model="ir.ui.view">
-        <field name="name">app.quote.form</field>
-        <field name="model">app.quote</field>
-        <field name="arch" type="xml">
-            <form string="Cotización de Elevador">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="date_order"/>
-                        <field name="partner_id"/>
-                        <field name="user_id"/>
-                        <field name="company"/>
-                        <field name="state"/>
-                        <field name="amount_total" readonly="1"/>
-                    </group>
-                    <!-- Configuración General del Elevador -->
-                    <group string="Configuración General del Elevador" col="4">
-                        <field name="elevator_quant"/>
-                        <field name="group_elevator"/>
-                        <field name="capacity_elevator"/>
-                        <field name="entrance_type"/>
-                        <field name="door_height"/>
-                        <field name="door_type"/>
-                        <field name="door_width"/>
-                        <field name="type_install"/>
-                        <field name="car_door"/>
-                        <field name="landing_door"/>
-                        <field name="car_model"/>
-                        <field name="car_floor"/>
-                    </group>
-                    <!-- Especificaciones Técnicas -->
-                    <group string="Especificaciones Técnicas" col="4">
-                        <field name="zona_sismica"/>
-                        <field name="recorrido_de_planta_baja_a_planta_alta"/>
-                        <field name="fase"/>
-                        <field name="profundidad"/>
-                        <field name="distancia_de_la_sala_de_maquinas_por_encima_del_piso_superior"/>
-                        <field name="acabado_de_cabina"/>
-                        <field name="acabado_de_media_cabina"/>
-                        <field name="acabado_de_abatibles"/>
-                        <field name="nomenclatura_del_piso"/>
-                        <field name="tipo_de_cubo"/>
-                        <field name="puerta_resistente_al_fuego"/>
-                        <field name="modelo_COP"/>
-                        <field name="modelo_LOP"/>
-                        <field name="velocidad"/>
-                        <field name="total_de_paradas"/>
-                        <field name="dimenciones_de_la_cabina"/>
-                        <field name="ancho_de_la_puerta"/>
-                        <field name="uso_del_elevador"/>
-                        <field name="regla_de_velocidad_CP"/>
-                        <field name="modelo_del_elevador"/>
-                        <field name="tipo_de_maquina"/>
-                        <field name="tipo_de_puerta_para_el_hueco"/>
-                        <field name="altura"/>
-                        <field name="acabado"/>
-                        <field name="tipo_de_entrada"/>
-                        <field name="traccion"/>
-                        <field name="ancho_de_cabina"/>
-                        <field name="profundidad_de_cabina"/>
-                        <field name="area_de_cabina"/>
-                        <field name="area_del_cubo"/>
-                        <field name="ancho_del_cubo"/>
-                        <field name="profundidad_del_cubo"/>
-                        <field name="rieles_de_cabina"/>
-                        <field name="entrerieles_de_cabina"/>
-                        <field name="rieles_de_contrapeso"/>
-                        <field name="entrerieles_de_contrapeso"/>
-                        <field name="sobrepeso"/>
-                        <field name="fosa"/>
-                        <field name="recorrido"/>
-                        <field name="control"/>
-                        <field name="version_del_plano"/>
-                    </group>
-                    <!-- Líneas de cotización -->
-                    <notebook>
-                        <page string="Líneas de Cotización">
-                            <field name="line_ids" context="{'default_quote_id': active_id}">
-                                <tree editable="bottom">
-                                    <field name="sequence"/>
-                                    <field name="product_id"/>
-                                    <field name="name"/>
-                                    <field name="quantity"/>
-                                    <field name="price_unit"/>
-                                    <field name="price_total"/>
-                                </tree>
-                                <form>
-                                    <sheet>
-                                        <group>
-                                            <field name="sequence"/>
-                                            <field name="product_id"/>
-                                            <field name="name"/>
-                                            <field name="quantity"/>
-                                            <field name="price_unit"/>
-                                            <field name="price_total" readonly="1"/>
-                                        </group>
-                                    </sheet>
-                                </form>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
+        <!-- =============================== -->
+        <!-- Vista de Formulario (app.quote) -->
+        <!-- =============================== -->
+        <record id="view_app_quote_form" model="ir.ui.view">
+            <field name="name">app.quote.form</field>
+            <field name="model">app.quote</field>
+            <field name="arch" type="xml">
+                <form string="Cotización de Elevador">
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirmar"
+                                states="draft" class="btn-primary"/>
+                        <button name="action_set_draft" type="object" string="Restablecer"
+                                states="cancel" class="btn-secondary"/>
+                        <button name="action_cancel" type="object" string="Cancelar"
+                                states="draft,sent,confirmed" class="btn-danger"/>
+                        <button name="action_generate_blank_pdf" type="object" string="Generar PDF en blanco"
+                                states="confirmed" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirmed,cancel"/>
+                    </header>
 
-    <record id="view_app_quote_line_tree" model="ir.ui.view">
-        <field name="name">app.quote.line.tree</field>
-        <field name="model">app.quote.line</field>
-        <field name="arch" type="xml">
-            <tree string="Líneas de Cotización">
-                <field name="sequence"/>
-                <field name="product_id"/>
-                <field name="name"/>
-                <field name="quantity"/>
-                <field name="price_unit"/>
-                <field name="price_total"/>
-                <field name="quote_id"/>
-            </tree>
-        </field>
-    </record>
+                    <sheet>
+                        <div style="text-align:right; font-size:24px; color:#007bff; font-weight:bold;">
+                            <field name="folio" nolabel="1" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                        </div>
+
+                            <group string="Datos del Comprador">
+                                <field name="nombre_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="compania_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="ubicacion_de_la_empresa" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="correo_electronico" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="codigo_postal" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="ciudad" attrs="{'readonly':[('state','=','confirmed')]}"/>
+
+                            <group string="Datos Generales">
+                                <field name="date_order" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="user_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="user_email" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="user_phone" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+                        </group>
+
+                            <group string="Dimensiones del Cubo y Componentes" col="2">
+                                <group>
+                                    <field name="tipo_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="ancho_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="profundidad_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="rieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="entrerieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="rieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                </group>
+                                <group>
+                                    <field name="entrerieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="sobrepeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="fosa" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="recorrido" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="control" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                    <field name="version_del_plano" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                </group>
+                            </group>
+
+
+                        <group col="2">
+                            <group string="Configuración del Elevador">
+                                <field name="elevator_quant" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="group_elevator" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="capacity_elevator" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="entrance_type" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="door_type" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="door_width" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="door_height" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="type_install" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="car_door" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="landing_door" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="car_model" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="car_floor" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+
+                            <group string="Especificaciones Técnicas">
+                                <field name="zona_sismica" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="recorrido" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="profundidad" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="altura" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="acabado" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+                        </group>
+
+                        <group string="Totales">
+                            <field name="amount_total" readonly="1"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Líneas de Cotización">
+                                <field name="line_ids" context="{'default_quote_id': active_id}"
+                                       attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ========================== -->
+        <!-- Vista en Lista (Tree View) -->
+        <!-- ========================== -->
+        <record id="view_app_quote_tree" model="ir.ui.view">
+            <field name="name">app.quote.tree</field>
+            <field name="model">app.quote</field>
+            <field name="arch" type="xml">
+                <tree string="Cotizaciones de Elevadores">
+                    <field name="folio"/>
+                    <field name="nombre_del_comprador"/>
+                    <field name="date_order"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
 </odoo>
