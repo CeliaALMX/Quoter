@@ -1,0 +1,51 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from io import BytesIO
+
+def generate_guiamecanica_pdf_binary(quote):
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Título centrado, más abajo para evitar amontonamiento
+    pdf.setFont("Helvetica-Bold", 28)
+    pdf.drawCentredString(width / 2, height - 80, "Guía de mecánica")
+
+    # Solo el número de folio, sin el texto "Folio"
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawRightString(width - 50, height - 40, f"{quote.folio or '-'}")
+
+    # Línea horizontal debajo del título
+    pdf.setLineWidth(1)
+    pdf.setStrokeColor(colors.HexColor('#007bff'))
+    pdf.line(50, height - 95, width - 50, height - 95)
+
+    # Bloque visual para los datos del cliente
+    block_top = height - 140
+    block_left = 60
+    block_width = width - 120
+    block_height = 125
+
+    pdf.setFillColor(colors.whitesmoke)
+    pdf.roundRect(block_left, block_top - block_height, block_width, block_height, radius=10, fill=1, stroke=0)
+
+    pdf.setFillColor(colors.black)
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(block_left + 15, block_top - 25, "Datos del cliente:")
+
+    pdf.setFont("Helvetica", 13)
+    yini = block_top - 50
+    spacing = 18
+    pdf.drawString(block_left + 30, yini, f"Nombre: {quote.nombre_del_comprador.name or '-'}")
+    pdf.drawString(block_left + 30, yini - spacing, f"Compañía: {quote.compania_del_comprador or '-'}")
+    pdf.drawString(block_left + 30, yini - 2 * spacing, f"Ubicación: {quote.ubicacion_de_la_empresa or '-'}")
+    pdf.drawString(block_left + 30, yini - 3 * spacing, f"Correo electrónico: {quote.correo_electronico or '-'}")
+    pdf.drawString(block_left + 30, yini - 4 * spacing, f"Código postal: {quote.codigo_postal or '-'}")
+    pdf.drawString(block_left + 30, yini - 5 * spacing, f"Ciudad: {quote.ciudad or '-'}")
+
+    pdf.showPage()
+    pdf.save()
+    pdf_content = buffer.getvalue()
+    buffer.close()
+    return pdf_content
