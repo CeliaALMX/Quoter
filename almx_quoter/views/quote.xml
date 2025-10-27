@@ -28,8 +28,8 @@
                                 states="cancel" class="btn-secondary"/>
                         <button name="action_cancel" type="object" string="Cancelar"
                                 states="draft,sent,confirmed" class="btn-danger"/>
-                        <button name="action_generate_blank_pdf" type="object" string="Generar PDF en blanco"
-                                states="confirmed" class="btn-secondary"/>
+                        <button name="action_generate_blank_pdf" type="object" string="Generar PDF en blanco" states="confirmed" class="btn-secondary"/>
+
                         <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirmed,cancel"/>
                     </header>
 
