@@ -1,16 +1,23 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 import base64
+from . import guiamecanica_pdf
 
 class MyAppItem(models.Model):
     _name = "app.quote"
     _description = "Cotizador de elevadores"
 
+    # Fecha de creación de la cotización
     date_order = fields.Datetime(string="Fecha de Cotización", default=fields.Datetime.now, required=True)
+    # Relación con el cliente
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True, domain=[('customer_rank', '>', 0)])
+    # Vendedor asociado (Usuario de Odoo)
     user_id = fields.Many2one("res.users", string="Vendedor", default=lambda s: s.env.user, required=True)
+    # Correo del contacto (relacionado)
     user_email = fields.Char(string='Correo del Contacto', related='user_id.email', store=True, readonly=True)
+    # Teléfono del usuario (relacionado)
     user_phone = fields.Char(string='Teléfono del Usuario', related='user_id.partner_id.phone', store=True, readonly=True)
+    # Estado de la cotización
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('sent', 'Enviada'),
@@ -18,6 +25,7 @@ class MyAppItem(models.Model):
         ('cancel', 'Cancelada')],
         default='draft', required=True)
 
+    # Nombre del comprador
     nombre_del_comprador = fields.Many2one(
         comodel_name='res.partner',
         string="Nombre del Comprador",
@@ -25,12 +33,14 @@ class MyAppItem(models.Model):
         domain=["|", ('customer_rank', '>', 0), ('user_ids', '!=', False)],
         help="Selecciona el comprador o usuario registrado."
     )
+    # Compañía del comprador y demás datos relacionados
     compania_del_comprador = fields.Char(string="Compañía del Comprador", readonly=True)
     ubicacion_de_la_empresa = fields.Char(string="Ubicación de la Empresa", readonly=True)
     correo_electronico = fields.Char(string="Correo Electrónico", readonly=True)
     codigo_postal = fields.Char(string="Código Postal", readonly=True)
     ciudad = fields.Char(string="Ciudad", readonly=True)
 
+    # Actualiza los campos relacionados al seleccionar un comprador
     @api.onchange('nombre_del_comprador')
     def _onchange_nombre_del_comprador(self):
         if self.nombre_del_comprador:
@@ -46,9 +56,14 @@ class MyAppItem(models.Model):
             self.codigo_postal = False
             self.ciudad = False
 
+    # Folio único de la cotización
     folio = fields.Char(string="Folio", readonly=True, copy=False, default="/")
+    # Líneas de cotización
     line_ids = fields.One2many('app.quote.line', 'quote_id', string="Líneas", required=True)
+    # Total, calculado según las líneas
     amount_total = fields.Float(string="Total", compute='_compute_amount_total', store=True, required=True)
+
+    # Campos técnicos y de grupo del elevador (cada uno representa una característica específica)
     elevator_quant = fields.Integer(string="Cantidad de Elevadores", default=1, required=True)
     group_elevator = fields.Selection([
         ('simplex', 'Simple'),
@@ -183,15 +198,26 @@ class MyAppItem(models.Model):
                 rec.state = 'draft'
         return True
 
+
     def action_generate_blank_pdf(self):
-        pdf_content = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n"
-        pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
-        url = f"data:application/pdf;base64,{pdf_base64}"
+        self.ensure_one()
+        pdf_bin = guiamecanica_pdf.generate_guiamecanica_pdf_binary(self)
+        attachment = self.env['ir.attachment'].create({
+            'name': 'Guia_de_mecanica.pdf',
+            'type': 'binary',
+            'datas': base64.b64encode(pdf_bin),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/pdf',
+        })
+        url = f'/web/content/{attachment.id}?download=true'
         return {
             'type': 'ir.actions.act_url',
             'url': url,
             'target': 'new',
         }
+
+
 
 class ElevatorQuoteLine(models.Model):
     _name = 'app.quote.line'
