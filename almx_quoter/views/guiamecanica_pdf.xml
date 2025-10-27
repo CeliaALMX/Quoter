@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Acción server para generar PDF que incluye folio y datos del cliente -->
+        <record id="action_generate_blank_pdf" model="ir.actions.server">
+            <field name="name">Generar Guía Mecánica PDF</field>
+            <field name="model_id" ref="model_app_quote"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_generate_blank_pdf()
+            </field>
+        </record>
+
+        <!-- Botón en la vista form para disparar la acción de PDF -->
+        <!-- Asegúrate que el botón esté en la vista form de app.quote en el estado correcto -->
+        <record id="view_app_quote_form" model="ir.ui.view">
+            <field name="name">app.quote.form</field>
+            <field name="model">app.quote</field>
+            <field name="arch" type="xml">
+                <form string="Cotización de Elevador">
+                    <header>
+                        <!-- ... otros botones ... -->
+                        <button name="action_generate_blank_pdf"
+                                type="object"
+                                string="Generar Guía Mecánica PDF"
+                                states="confirmed"
+                                class="btn-secondary"/>
+                        <!-- ... statusbar y demás ... -->
+                    </header>
+                    <!-- ... resto del formulario ... -->
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
