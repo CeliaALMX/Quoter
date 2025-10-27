@@ -2,7 +2,6 @@ from odoo import fields, models, api
 from odoo.exceptions import UserError
 import base64
 
-
 class MyAppItem(models.Model):
     _name = "app.quote"
     _description = "Cotizador de elevadores"
@@ -10,9 +9,8 @@ class MyAppItem(models.Model):
     date_order = fields.Datetime(string="Fecha de Cotización", default=fields.Datetime.now, required=True)
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True, domain=[('customer_rank', '>', 0)])
     user_id = fields.Many2one("res.users", string="Vendedor", default=lambda s: s.env.user, required=True)
-    user_email = fields.Char(related='user_id.email', string='Correo del Contacto', store=True, readonly=True)
-    user_phaone = fields.Char(related='user_id.partner_id.phone', string='Teléfono del Usuario', store=True,
-                             readonly=True)
+    user_email = fields.Char(string='Correo del Contacto', related='user_id.email', store=True, readonly=True)
+    user_phone = fields.Char(string='Teléfono del Usuario', related='user_id.partner_id.phone', store=True, readonly=True)
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('sent', 'Enviada'),
@@ -77,8 +75,7 @@ class MyAppItem(models.Model):
         ('manual', 'Manual abatible en inox con cristal templado')], string="Puerta de Cabina", required=True)
     landing_door = fields.Selection([
         ('half_height', 'Media Altura'),
-        ('manual_lading', 'Manual abatible en inox con cristal templado')], string="Puerta de Desembarque",
-        required=True)
+        ('manual_lading', 'Manual abatible en inox con cristal templado')], string="Puerta de Desembarque", required=True)
     car_model = fields.Selection([
         ('medium_plataform', 'Mediana plataforma'),
         ('large_plataform', 'Gran Plataforma')], string="Modelo de Cabina", required=True)
@@ -87,12 +84,10 @@ class MyAppItem(models.Model):
         ('plastic', 'Plástico'),
         ('lamina', 'Lámina')], string="Piso de Cabina", required=True)
     zona_sismica = fields.Char(required=True, string="Zona Sísmica")
-    recorrido_de_planta_baja_a_planta_alta = fields.Char(required=True,
-                                                         string="Recorrido Planta Baja a Planta Alta (m)")
+    recorrido_de_planta_baja_a_planta_alta = fields.Char(required=True, string="Recorrido Planta Baja a Planta Alta (m)")
     fase = fields.Char(required=True, string="Fase Eléctrica")
     profundidad = fields.Char(required=True, string="Profundidad General (m)")
-    distancia_de_la_sala_de_maquinas_por_encima_del_piso_superior = fields.Char(required=True,
-                                                                                string="Distancia Sala de Máquinas (m)")
+    distancia_de_la_sala_de_maquinas_por_encima_del_piso_superior = fields.Char(required=True, string="Distancia Sala de Máquinas (m)")
     acabado_de_cabina = fields.Char(required=True, string="Acabado de Cabina")
     acabado_de_media_cabina = fields.Char(required=True, string="Acabado de media cabina")
     acabado_de_abatibles = fields.Char(required=True, string="Acabado de Puertas Abatibles")
@@ -189,7 +184,6 @@ class MyAppItem(models.Model):
         return True
 
     def action_generate_blank_pdf(self):
-        """Genera un PDF en blanco y lo ofrece para descarga."""
         pdf_content = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n"
         pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
         url = f"data:application/pdf;base64,{pdf_base64}"
@@ -198,7 +192,6 @@ class MyAppItem(models.Model):
             'url': url,
             'target': 'new',
         }
-
 
 class ElevatorQuoteLine(models.Model):
     _name = 'app.quote.line'
