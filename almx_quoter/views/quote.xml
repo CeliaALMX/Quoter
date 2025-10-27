@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
-        <!-- ========================================================= -->
         <!-- Acción principal para abrir el formulario de cotizaciones -->
-        <!-- ========================================================= -->
         <record id="action_my_app_items" model="ir.actions.act_window">
             <field name="name">Cotizaciones de Elevadores</field>
             <field name="res_model">app.quote</field>
@@ -14,22 +11,11 @@
             </field>
         </record>
 
-        <!-- =============== -->
         <!-- Menús del módulo -->
-        <!-- =============== -->
-        <menuitem id="menu_almx_quoter_root"
-                  name="Cotizador ALMX"
-                  sequence="1"/>
+        <menuitem id="menu_almx_quoter_root" name="Cotizador ALMX" sequence="1"/>
+        <menuitem id="menu_almx_quoter_items" name="Cotizaciones" parent="menu_almx_quoter_root" action="action_my_app_items" sequence="10"/>
 
-        <menuitem id="menu_almx_quoter_items"
-                  name="Cotizaciones"
-                  parent="menu_almx_quoter_root"
-                  action="action_my_app_items"
-                  sequence="10"/>
-
-        <!-- =============================== -->
         <!-- Vista de Formulario (app.quote) -->
-        <!-- =============================== -->
         <record id="view_app_quote_form" model="ir.ui.view">
             <field name="name">app.quote.form</field>
             <field name="model">app.quote</field>
@@ -52,13 +38,13 @@
                             <field name="folio" nolabel="1" attrs="{'readonly':[('state','=','confirmed')]}"/>
                         </div>
 
-                            <group string="Datos del Comprador">
-                                <field name="nombre_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="compania_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="ubicacion_de_la_empresa" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="correo_electronico" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="codigo_postal" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="ciudad" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                        <group string="Datos del Comprador">
+                            <field name="nombre_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="compania_del_comprador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="ubicacion_de_la_empresa" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="correo_electronico" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="codigo_postal" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="ciudad" attrs="{'readonly':[('state','=','confirmed')]}"/>
 
                             <group string="Datos Generales">
                                 <field name="date_order" attrs="{'readonly':[('state','=','confirmed')]}"/>
@@ -69,25 +55,24 @@
                             </group>
                         </group>
 
-                            <group string="Dimensiones del Cubo y Componentes" col="2">
-                                <group>
-                                    <field name="tipo_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="ancho_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="profundidad_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="rieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="entrerieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="rieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                </group>
-                                <group>
-                                    <field name="entrerieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="sobrepeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="fosa" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="recorrido" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="control" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                    <field name="version_del_plano" attrs="{'readonly': [('state','=','confirmed')]}"/>
-                                </group>
+                        <group string="Dimensiones del Cubo y Componentes" col="2">
+                            <group>
+                                <field name="tipo_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="ancho_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="profundidad_del_cubo" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="rieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="entrerieles_de_cabina" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="rieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
                             </group>
-
+                            <group>
+                                <field name="entrerieles_de_contrapeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="sobrepeso" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="fosa" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="recorrido" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="control" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                                <field name="version_del_plano" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                            </group>
+                        </group>
 
                         <group col="2">
                             <group string="Configuración del Elevador">
@@ -107,10 +92,46 @@
 
                             <group string="Especificaciones Técnicas">
                                 <field name="zona_sismica" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                                <field name="recorrido" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="recorrido_de_planta_baja_a_planta_alta" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="fase" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                 <field name="profundidad" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                 <field name="altura" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                 <field name="acabado" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+                        </group>
+
+                        <group string="Especificaciones Adicionales" col="2">
+                            <group>
+                                <field name="distancia_de_la_sala_de_maquinas_por_encima_del_piso_superior" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="acabado_de_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="acabado_de_media_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="acabado_de_abatibles" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="nomenclatura_del_piso" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="puerta_resistente_al_fuego" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="modelo_COP" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="modelo_LOP" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="velocidad" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="total_de_paradas" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+                            <group>
+                                <field name="dimenciones_de_la_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="ancho_de_la_puerta" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="uso_del_elevador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="regla_de_velocidad_CP" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="modelo_del_elevador" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="tipo_de_maquina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="tipo_de_puerta_para_el_hueco" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="tipo_de_entrada" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="traccion" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            </group>
+                        </group>
+
+                        <group string="Medidas y Áreas" col="2">
+                            <group>
+                                <field name="ancho_de_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="profundidad_de_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="area_de_cabina" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                <field name="area_del_cubo" attrs="{'readonly':[('state','=','confirmed')]}"/>
                             </group>
                         </group>
 
@@ -129,9 +150,7 @@
             </field>
         </record>
 
-        <!-- ========================== -->
         <!-- Vista en Lista (Tree View) -->
-        <!-- ========================== -->
         <record id="view_app_quote_tree" model="ir.ui.view">
             <field name="name">app.quote.tree</field>
             <field name="model">app.quote</field>
