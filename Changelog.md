@@ -9,27 +9,35 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ---
 
-## [1.2.0] - 2025-10-21
+## [1.1.0] - 2025-10-21
 ### Added
 - Nueva función para importar datos sin necesidad de reiniciar el servidor.
-- Asociación automática del campo `usuario_id` al modelo de empleados.
+- Asociación automática del campo usuario_id al modelo de empleados.
+- Se agrego una barra de estado con un "widget".
+  
 
 ### Changed
 - Actualización de la lógica de permisos en el modelo *helpdesk.ticket*.
 - Optimización del rendimiento en la carga de vistas tridimensionales.
+- El campo de altura, se modifico para hacer que reciba números decimales.
+- Eliminamos el campo de ancho de puerta debido a que estaba duplicado.
 
 ### Fixed
 - Corrección del error que afectaba la visibilidad de los tickets del administrador.
 - Resolución del problema con botones invisibles en el modelo 3D de ascensores.
-
+- Agregamos un boton llamado "enviar cotizacion".
+- Agregamos un boton de "confirmar", el cual manda y cambia la barra de estado a confirmada.
+  
 ### Removed
 - Eliminación de funciones obsoletas del módulo `legacy_helpdesk`.
-
+-- El campo de grupo de elevadores, se elimino con la terminacón x con todos los campos.
+  
 ---
 
-## [1.1.0] - 2025-09-10
+## [1.2.0] - 2025-10-16
 ### Added
 - Implementación de variantes de productos en el módulo de inventario.
+- 
 
 ### Changed
 - Ajustes en las vistas XML para mejorar la compatibilidad con dispositivos móviles.
